@@ -46,7 +46,7 @@ class ResponseMessage
     /**
      *  Retorna un mensaje de tipo 'success 200'
      */
-    public static function msgSuccess(String $text, String $title = 'Correcto')
+    public static function msgSuccess(String $text, String $title = 'Success')
     {
         return (new Self)->message('success', $title, $text, 200, true);
     }
@@ -54,7 +54,7 @@ class ResponseMessage
     /**
      *  Retorna un mensaje de tipo 'success 201'
      */
-    public static function msgSuccessStore(String $text, String $title = 'Correcto')
+    public static function msgSuccessStore(String $text, String $title = 'Success')
     {
         return (new Self)->message('success', $title, $text, 201, true);
     }
