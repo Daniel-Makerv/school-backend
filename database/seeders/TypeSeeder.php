@@ -41,5 +41,17 @@ class TypeSeeder extends Seeder
             "description" => "role type student",
             "str" => "role-type-student"
         ]);
+
+        Type::firstOrCreate([
+            "name" => "permission teacher",
+            "description" => "type permission teacher",
+            "str" => "type-permission-teacher"
+        ]);
+
+        Type::firstOrCreate([
+            "name" => "permission student",
+            "description" => "type permission student",
+            "str" => "type-permission-student"
+        ]);
     }
 }

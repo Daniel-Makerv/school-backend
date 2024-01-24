@@ -45,6 +45,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'status_id' => Status::whereStr('status-active-user')->first()->id,
             'role_id' => Role::whereStr('student-role')->first()->id,
+            'birthdate' => Carbon::now(),
+            'age' => random_int(18, 25),
         ];
     }
 
@@ -59,6 +61,7 @@ class UserFactory extends Factory
             Student::create([
                 'user_id' => $user->id,
                 'student_enrollment' => StudentHelper::generateEnrollment($user),
+                'comment_description' => fake()->text(60),
             ]);
         });
     }

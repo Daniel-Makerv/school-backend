@@ -19,8 +19,10 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            PermissionSeeder::class,
         ]);
 
         User::factory()->count(50)->create(); // create 50 students
+
     }
 }

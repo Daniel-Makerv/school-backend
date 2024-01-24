@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId("role_id")->constrained();
+            $table->foreignId('status_id')->constrained();
+            $table->date('birthdate');
+            $table->unsignedInteger('age')->nullable();
         });
     }
 
@@ -23,6 +26,9 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropConstrainedForeignId("role_id");
+            $table->dropConstrainedForeignId('status_id');
+            $table->dropColumn('age');
+            $table->dropColumn('birthdate');
         });
     }
 };

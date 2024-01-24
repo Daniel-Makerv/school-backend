@@ -23,7 +23,10 @@ class User extends Authenticatable
         'password',
         'status_id',
         'role_id',
-
+        'birthdate',
+        'age',
+        'email_verified_at',
+        'remember_token',
     ];
 
     /**
@@ -33,6 +36,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'email_verified_at',
         'remember_token',
     ];
 
@@ -44,5 +48,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'created_at' => 'date:Y-m-d',
+        'updated_at' => 'date:Y-m-d',
     ];
+
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function permissionApi()
+    {
+        return Permission::join('permission_role', 'permissions.id', 'permission_role.permission_id')
+            ->join('roles', 'permission_role.role_id', 'roles.id')
+            ->join('users', 'roles.id', 'users.role_id')
+            ->where('users.id', $this->id)
+            ->selectRaw('permissions.str as permission')
+            ->groupBy('permissions.id')
+            ->get()->map(function ($permission) {
+                return $permission->permission;
+            });
+    }
 }
