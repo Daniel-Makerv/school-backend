@@ -2,6 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Helpers\Student\StudentHelper;
+use App\Models\Role;
+use App\Models\Status;
+use App\Models\Student;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -11,6 +17,14 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     */
+    protected $model = User::class;
+
     /**
      * The current password being used by the factory.
      */
@@ -29,16 +43,23 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'status_id' => Status::whereStr('status-active-user')->first()->id,
+            'role_id' => Role::whereStr('student-role')->first()->id,
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Configure the model factory.
      */
-    public function unverified(): static
+    public function configure(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this->afterMaking(function (User $user) {
+            // ...
+        })->afterCreating(function (User $user) {
+            Student::create([
+                'user_id' => $user->id,
+                'student_enrollment' => StudentHelper::generateEnrollment($user),
+            ]);
+        });
     }
 }

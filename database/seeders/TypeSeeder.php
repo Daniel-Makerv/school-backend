@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,33 @@ class TypeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Type::firstOrCreate([
+            "name" => "status",
+            "description" => "type status",
+            "str" => "type-status"
+        ]);
+
+        Type::firstOrCreate([
+            "name" => "Active user",
+            "description" => "type user active",
+            "str" => "user-active-type"
+        ]);
+        Type::firstOrCreate([
+            "name" => "Inactive user",
+            "description" => "type user inactive",
+            "str" => "user-inactive-type"
+        ]);
+
+        Type::firstOrCreate([
+            "name" => "role teacher",
+            "description" => "role type teacher",
+            "str" => "role-type-teacher"
+        ]);
+
+        Type::firstOrCreate([
+            "name" => "role student",
+            "description" => "role type student",
+            "str" => "role-type-student"
+        ]);
     }
 }

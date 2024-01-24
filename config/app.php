@@ -30,6 +30,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -58,6 +59,9 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
+
+    'identify_school_id' => env('IDENTIFY_SCHOOL_ID'),
+
 
     /*
     |--------------------------------------------------------------------------
