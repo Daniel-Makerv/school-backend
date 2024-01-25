@@ -23,6 +23,21 @@ use Illuminate\Support\Str;
 
 class TaskHelper
 {
+    /**
+     * @param object $student
+     * 
+     * @return [type]
+     */
+    public static function TaskForStudent($student)
+    {
+        return Task::join('student_task_qualification', 'tasks.id', 'student_task_qualification.task_id')
+            ->join('students', 'student_task_qualification.student_id', 'students.id')
+            ->join('users', 'students.user_id', 'users.id')
+            ->where(
+                ['students.id' => $student->id],
+                ['student_task_qualification.student_id' => $student->id],
+            )->get();
+    }
     public static function AllTasks()
     {
         return Task::selectRaw('tasks.name as name, tasks.description as description')->paginate(5);
@@ -40,5 +55,4 @@ class TaskHelper
             ->selectRaw('task.name as taskName, task.description, COUNT(users.id) as students_assigned')
             ->paginate(5);
     }
-    
 }

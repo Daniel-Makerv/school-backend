@@ -100,4 +100,17 @@ class StudentController extends Controller
             'data' => $response,
         ], 200);
     }
+
+    public function TasksForStudent($enrollment)
+    {
+        try {
+            $response = StudentHelper::deleteStudent($enrollment);
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("upps error: " . $err->getMessage());
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $response,
+        ], 200);
+    }
 }
