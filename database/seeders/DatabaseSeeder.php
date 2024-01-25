@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +24,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->count(50)->create(); // create 50 students
+
+        $this->call([
+            TaskSeeder::class,
+        ]);
 
     }
 }
