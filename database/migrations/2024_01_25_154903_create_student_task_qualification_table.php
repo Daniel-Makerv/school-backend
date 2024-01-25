@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_task_qualification', function (Blueprint $table) {
+        Schema::create('student_task', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained();
             $table->unsignedBigInteger('task_id')->constrained();
