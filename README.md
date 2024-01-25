@@ -9,12 +9,10 @@ Este proyecto esta desarrollado con laravel, docker y vite.
 
 - **[Vehikl](https://vehikl.com/)**
 
-  ### Instalaciòn
-
+# Instalaciòn
   ## Instalacion de las librerias de docker y laravel:
-    # corre el siguiente comando:
-  
-docker run --rm \
+# corre el siguiente comando:
+    docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
