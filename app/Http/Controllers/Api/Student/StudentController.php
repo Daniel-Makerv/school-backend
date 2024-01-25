@@ -51,9 +51,14 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $enrollment)
     {
-        //
+        try {
+            $student = StudentHelper::showStudent($enrollment);
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("upps error: " . $err->getMessage());
+        }
+        return response()->json($student);
     }
 
     /**
@@ -67,9 +72,17 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $enrollment)
     {
-        //
+        try {
+            $student = StudentHelper::updateStudent($enrollment, $request->all());
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("upps error: " . $err->getMessage());
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $request->all()
+        ]);
     }
 
     /**

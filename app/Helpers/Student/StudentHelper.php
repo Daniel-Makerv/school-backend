@@ -8,10 +8,12 @@ use App\Models\ProductLog;
 use App\Models\Role;
 use App\Models\Seller;
 use App\Models\Status;
+use App\Models\Student;
 use App\Models\Team;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Vinkla\Hashids\Facades\Hashids;
@@ -30,6 +32,20 @@ class StudentHelper
     {
 
         return config('app.identify_school_id') . $user->id;
+    }
+
+    public static function getStudent($enrollment)
+    {
+        $student = Student::whereStudentEnrollment($enrollment)->firstOr(function () {
+            throw new ModelNotFoundException('student not found', 404);
+        });
+
+        return User::join('students', 'users.id', 'students.user_id')
+            ->where([
+                'users.id' => $student->user_id
+            ])->selectRaw('users.name as name, users.email as email, users.created_at as created_at, users.updated_at as updated_at, 
+        users.birthdate as birthdate, users.age as age, students.student_enrollment as student_enrollment, students.comment_description as comment_description')
+            ->first();
     }
 
     /**
@@ -83,5 +99,32 @@ class StudentHelper
         }
 
         return $studentData;
+    }
+
+    public static function showStudent($enrollment)
+    {
+        try {
+            $student = self::getStudent($enrollment);
+        } catch (\Exception $err) {
+            return throw new Exception("Error to get student: " . $err->getMessage(), 500);
+        }
+
+        return $student;
+    }
+
+    public static function updateStudent($enrollment, $data)
+    {
+        try {
+            $student = Student::whereStudentEnrollment($enrollment)->firstOr(function () {
+                throw new ModelNotFoundException('student not found', 404);
+            });
+            $user = User::find($student->user_id);
+            return json_encode($data);
+            $student->update($data);
+            $user->update($data);
+        } catch (\Exception $err) {
+            return throw new Exception("Error to update student: " . $err->getMessage(), 500);
+        }
+        return $student;
     }
 }
