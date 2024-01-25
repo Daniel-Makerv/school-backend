@@ -14,15 +14,17 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-        $tasks = collect(
+        $tasks = collect([
             ['name' => fake()->text(30), 'description' => fake()->text(100)],
             ['name' => fake()->text(30), 'description' => fake()->text(100)],
             ['name' => fake()->text(30), 'description' => fake()->text(100)],
-        );
+            ])->map(function($task){
+                $task = Task::create([
+                    'name' => $task['name'],
+                    'description' => $task['description'],
+                ]);
+            });
 
-        foreach ($tasks as $key => $task) {
-            $task = Task::create([]);
-        }
 
         $students = Student::all()->map(function ($student) {
             $tasks = Task::all()->map(function ($task) use ($student) {
