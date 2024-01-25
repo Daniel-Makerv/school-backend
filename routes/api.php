@@ -29,4 +29,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
     //student routes
     Route::resource('student', Api\Student\StudentController::class);
+
+    //tasks
+    Route::resource('task', Api\Task\TaskController::class);
 });

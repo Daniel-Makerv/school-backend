@@ -34,6 +34,11 @@ class StudentHelper
         return config('app.identify_school_id') . $user->id;
     }
 
+    /**
+     * @param mixed $enrollment
+     * 
+     * @return [type]
+     */
     public static function getStudent($enrollment)
     {
         $student = Student::whereStudentEnrollment($enrollment)->firstOr(function () {
@@ -70,6 +75,11 @@ class StudentHelper
         return $users;
     }
 
+    /**
+     * @param mixed $data
+     * 
+     * @return [type]
+     */
     public static function storeStudent($data)
     {
         try {
@@ -101,6 +111,11 @@ class StudentHelper
         return $studentData;
     }
 
+    /**
+     * @param mixed $enrollment
+     * 
+     * @return [type]
+     */
     public static function showStudent($enrollment)
     {
         try {
@@ -112,6 +127,12 @@ class StudentHelper
         return $student;
     }
 
+    /**
+     * @param mixed $enrollment
+     * @param mixed $data
+     * 
+     * @return [type]
+     */
     public static function updateStudent($enrollment, $data)
     {
         try {
@@ -126,5 +147,23 @@ class StudentHelper
             return throw new Exception("Error to update student: " . $err->getMessage(), 500);
         }
         return $student;
+    }
+
+    public static function deleteStudent($enrollment)
+    {
+        try {
+            $student = Student::whereStudentEnrollment($enrollment)->firstOr(function () {
+                throw new ModelNotFoundException('student not found', 404);
+            });
+
+            //delete task for student
+            $user = User::find($student->user_id)->delete();
+            $student->tasks()->detach();
+            $student->delete();
+        } catch (\Exception $err) {
+            return throw new Exception("Error to delete student: " . $err->getMessage(), 500);
+        }
+
+        return "student delete successfully with enrollment: " . $enrollment;
     }
 }
