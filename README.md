@@ -7,15 +7,23 @@ Este proyecto esta desarrollado con laravel, docker y vite.
 
 ### Documentacion de la api en postman:
 
-- **[Vehikl](https://vehikl.com/)**
+- **[api back school](https://documenter.getpostman.com/view/15139381/2s9Yynm46u)**
 
 # Instalaciòn
+    *Clone el repositorio y cree el archivo .env en la raiz del proyecto con los datos compartidos por el admin del repo*
+
   ## Instalacion de las librerias de docker y laravel:
-# corre el siguiente comando:
+# Ejecute el siguiente comando:
     docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
     laravelsail/php82-composer:latest \
     composer install --ignore-platform-reqs
+# Ejecute el siguiente comando:
+    ./vendor/bin/sail up
+# Ejecute el siguiente comando para instalar las librerias de npm:
+    npm i 
+# Ejecute el siguiente comando para compilar vite:
+    npm run dev
   
