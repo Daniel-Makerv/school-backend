@@ -82,14 +82,35 @@ class StudentController extends Controller
         return response()->json([
             'success' => true,
             'data' => $request->all()
-        ]);
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $enrollment)
     {
-        //
+        try {
+            $response = StudentHelper::deleteStudent($enrollment);
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("upps error: " . $err->getMessage());
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $response,
+        ], 200);
+    }
+
+    public function TasksForStudent($enrollment)
+    {
+        try {
+            $response = StudentHelper::deleteStudent($enrollment);
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("upps error: " . $err->getMessage());
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $response,
+        ], 200);
     }
 }

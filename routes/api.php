@@ -29,4 +29,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
     //student routes
     Route::resource('student', Api\Student\StudentController::class);
+    Route::get('student/{enrollment}/tasks', [Api\Student\StudentController::class, 'TasksForStudent']);
+
+    //tasks routes
+    Route::resource('task', Api\Task\TaskController::class);
 });
