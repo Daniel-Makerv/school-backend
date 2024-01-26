@@ -39,9 +39,14 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskRequest\Store $request)
     {
-        //
+        try {
+            $response = TaskHelper::storeTask((object)$request->all());
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("Error to create task: " . $err->getMessage());
+        }
+        return response()->json($response);
     }
 
     /**
@@ -63,9 +68,19 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest\Update $request, Task $task)
     {
-        //
+        try {
+            $response = TaskHelper::updateQualification($request->enrollment, $request->qualification, $task);
+        } catch (\Exception $err) {
+            return ResponseMessage::msgServerError("Error to updated qualification: " . $err->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Updated Qualification',
+            'data' => $response
+        ]);
     }
 
     /**

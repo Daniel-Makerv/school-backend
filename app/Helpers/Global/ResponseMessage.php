@@ -99,6 +99,14 @@ class ResponseMessage
         return (new Self)->message('error', $title, $text, 403, false);
     }
 
+    /**
+     *  Retorna un mensaje de tipo 'error 404'
+     */
+    public static function msgNotFoundRegister(String $text, String $title = 'Oh no')
+    {
+        return (new Self)->message('error', $title, $text, 404, false);
+    }
+
 
     //Inertia messages
     /**

@@ -101,12 +101,17 @@ class StudentController extends Controller
         ], 200);
     }
 
+    /**
+     * @param mixed $enrollment
+     * 
+     * @return [type]
+     */
     public function TasksForStudent($enrollment)
     {
         try {
-            $response = StudentHelper::deleteStudent($enrollment);
+            $response = StudentHelper::TasksForStudent($enrollment);
         } catch (\Exception $err) {
-            return ResponseMessage::msgServerError("upps error: " . $err->getMessage());
+            return ResponseMessage::msgNotFoundRegister("upps error: " . $err->getMessage());
         }
         return response()->json([
             'success' => true,

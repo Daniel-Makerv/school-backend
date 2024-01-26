@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Seller;
 use App\Models\Status;
 use App\Models\Student;
+use App\Models\Task;
 use App\Models\Team;
 use App\Models\User;
 use Carbon\Carbon;
@@ -34,6 +35,12 @@ class StudentHelper
         return config('app.identify_school_id') . $user->id;
     }
 
+    public static function getOnlyStudent($enrollment)
+    {
+        return Student::whereStudentEnrollment($enrollment)->firstOr(function () {
+            throw new ModelNotFoundException('student not found', 404);
+        });
+    }
     /**
      * @param mixed $enrollment
      * 
@@ -149,6 +156,11 @@ class StudentHelper
         return $student;
     }
 
+    /**
+     * @param mixed $enrollment
+     * 
+     * @return [type]
+     */
     public static function deleteStudent($enrollment)
     {
         try {
@@ -157,9 +169,10 @@ class StudentHelper
             });
 
             //delete task for student
-            $user = User::find($student->user_id)->delete();
+            $user = User::find($student->user_id);
             $student->tasks()->detach();
             $student->delete();
+            $user->delete();
         } catch (\Exception $err) {
             return throw new Exception("Error to delete student: " . $err->getMessage(), 500);
         }
@@ -167,16 +180,26 @@ class StudentHelper
         return "student delete successfully with enrollment: " . $enrollment;
     }
 
-    public static function TasksForStudent()
+    /**
+     * @param mixed $enrollment
+     * 
+     * @return [type]
+     */
+    public static function TasksForStudent($enrollment)
     {
         try {
             $student = Student::whereStudentEnrollment($enrollment)->firstOr(function () {
                 throw new ModelNotFoundException('student not found', 404);
             });
-        } catch (\Exception $err) {
-            //throw $th;
-        }
 
-        return $student->tasks;
+            $tasks = Task::join('student_task', 'tasks.id', 'student_task.task_id')
+                ->join('students', 'student_task.student_id', 'students.id')
+                ->where([
+                    'students.user_id' => $student->user_id
+                ])->selectRaw('tasks.name as taskName, tasks.description as taskDescription, student_task.qualification as qualification')->get();
+        } catch (\Exception $err) {
+            return throw new Exception("Error to get task for student: " . $err->getMessage(), 404);
+        }
+        return $tasks;
     }
 }
